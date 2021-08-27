@@ -168,11 +168,12 @@ ray.shutdown()
 ray.init()
 trainer = DQNTrainer(env=Env, config=env_config)
 
-NUM_TRAINING_ITERATIONS = 10
+NUM_TRAINING_ITERATIONS = 25000
 
 episode_reward_means = open('episode_reward_means.txt', 'a')
 full_results = open('full_results.txt', 'a')
 checkpoint_paths = open('checkpoints.txt', 'a')
+
 
 for i in range(NUM_TRAINING_ITERATIONS):
     if i % 100 == 0:
