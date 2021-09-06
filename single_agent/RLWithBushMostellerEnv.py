@@ -45,7 +45,7 @@ beta = 0.4
 A = 1.0
 X = 0.5 # cooperativeness criteria
 
-class Env(gym.Env):
+class RLWithBushMostellerEnv(gym.Env):
     def __init__(self, config):
         self.aveCont = [0.0] * tmax
         self.net = self.completeNet()

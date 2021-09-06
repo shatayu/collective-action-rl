@@ -1,7 +1,7 @@
-from Env import Env
+from RLWithBushMostellerEnv import RLWithBushMostellerEnv
 from random import randint
 
-e = Env({})
+e = RLWithBushMostellerEnv({})
 
 def print_state(state):
     for _round in state:
