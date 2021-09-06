@@ -148,7 +148,10 @@ class RLWithBushMostellerEnv(gym.Env):
 
         self.current_round += 1
         
-        return self.all_at, self.get_reward(), self.current_round >= tmax, {}
+        return self.get_state(), self.get_reward(), self.current_round >= tmax, {}
+    
+    def get_state(self):
+        return self.all_at
 
     def get_reward(self):
         return 0.0 if self.current_round < tmax else sum(sum(at) for at in self.all_at)
