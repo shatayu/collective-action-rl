@@ -74,7 +74,7 @@ class Env(gym.Env):
             At[i] = A
             st[i] = 0
 
-        self.all_at[self.current_round] = at
+        self.all_at[self.current_round] = at.copy()
 
     def reset(self):
         self.aveCont = [0.0] * tmax
@@ -133,12 +133,8 @@ class Env(gym.Env):
             at[i] = np.random.normal() * std + pt[i]
             while at[i] < 0 or at[i] > 1:
                 at[i] = np.random.normal() * std + pt[i]
-        
-        print('----------------')
-        print(self.all_at)
-        self.all_at[self.current_round] = at
-        print(self.all_at)
-        print('****************')
+
+        self.all_at[self.current_round] = at.copy()
     
     def step(self, action_input):
         action = action_input / 100.0
