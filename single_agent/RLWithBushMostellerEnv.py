@@ -82,7 +82,7 @@ class RLWithBushMostellerEnv(gym.Env):
         self.observation_space = gym.spaces.Box(low=0, high=1, shape=(tmax, N), dtype=np.float32)
 
         self.initialize(self.net, self.payoff, self.at, self.pt, self.st, self.At)
-        return self.all_at
+        return self.get_state()
         
     def completeNet(self):
         net = [[] for i in range(N + 1)]
