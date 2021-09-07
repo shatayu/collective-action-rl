@@ -32,18 +32,9 @@ from ray.rllib.utils import try_import_tf
 from ray.tune import grid_search
 import math
 
+from BushMostellerConstants import iteNum, N, tmax, a, std, beta, A, X
+
 tf = try_import_tf()
-
-iteNum = 1000
-N = 3 # number of agents EXCLUDING the RL agent
-tmax = 25 # number of rounds
-
-a = 1.6 # multiply factor for PGG
-
-std = 0.2 # std of distribution from which contribution is drawn
-beta = 0.4
-A = 1.0
-X = 0.5 # cooperativeness criteria
 
 class RLWithBushMostellerEnv(gym.Env):
     def __init__(self, config):
@@ -151,7 +142,9 @@ class RLWithBushMostellerEnv(gym.Env):
         return self.get_state(), self.get_reward(), self.current_round >= tmax, {}
     
     def get_state(self):
-        return self.all_at
+        # return self.all_at
+        pass
 
     def get_reward(self):
-        return 0.0 if self.current_round < tmax else sum(sum(at) for at in self.all_at)
+        # return 0.0 if self.current_round < tmax else sum(sum(at) for at in self.all_at)
+        pass
