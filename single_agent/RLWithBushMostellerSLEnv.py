@@ -65,7 +65,7 @@ if __name__ == '__main__':
     ray.init()
     trainer = DQNTrainer(env=RLWithBushMostellerSLEnv, config=env_config)
 
-    NUM_TRAINING_ITERATIONS = 1
+    NUM_TRAINING_ITERATIONS = 5000
 
     episode_reward_means = open('sl_results/episode_reward_means.txt', 'w+')
     full_results = open('sl_results/full_results.txt', 'w+')
