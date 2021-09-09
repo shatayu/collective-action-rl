@@ -27,7 +27,7 @@ class RLWithBushMostellerPLEnv(RLWithBushMostellerEnv):
     def __init__(self, config):
         super().__init__(config)
         # give last round and current round number
-        self.observation_space = gym.spaces.Tuple((gym.spaces.Box(low=0, high=1, shape=(1, N + 1), dtype=np.float32), gym.spaces.Discrete(tmax)))
+        self.observation_space = gym.spaces.Tuple((gym.spaces.Box(low=0, high=1, shape=(1, N + 1), dtype=np.float32), gym.spaces.Discrete(tmax + 1)))
 
     def get_reward(self):
         if self.current_round < tmax:
@@ -37,22 +37,25 @@ class RLWithBushMostellerPLEnv(RLWithBushMostellerEnv):
             return sum([len(list(filter(lambda x: x > 0.5, at[:3]))) for at in self.all_at])
 
     def get_state(self):
-        return ([self.all_at[self.current_round - 1]], self.current_round - 1)
+        return ([self.all_at[self.current_round - 1]], self.current_round)
 
 if __name__ == '__main__':
     # all_rewards = []
     # num_iters = 1
     # for _ in range(num_iters):
-    #     env = RLWithBushMostellerSLEnv({})
+    #     env = RLWithBushMostellerPLEnv({})
 
     #     all_rewards = []
     # num_iters = 1
     # for _ in range(num_iters):
-    #     env = RLWithBushMostellerSLEnv({})
+    #     env = RLWithBushMostellerPLEnv({})
+    #     print(env.reset())
 
     #     for i in range(tmax):
     #         state, reward, done, info = env.step(100)
+    #         print(state)
     #         print(reward)
+    #         print('*********************')
     #         if i == tmax - 1:
     #             all_rewards.append(reward)
 

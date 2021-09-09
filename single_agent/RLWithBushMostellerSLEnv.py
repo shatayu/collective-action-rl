@@ -27,7 +27,7 @@ class RLWithBushMostellerSLEnv(RLWithBushMostellerEnv):
     def __init__(self, config):
         super().__init__(config)
         # give last round and current round number
-        self.observation_space = gym.spaces.Tuple((gym.spaces.Box(low=0, high=1, shape=(1, N + 1), dtype=np.float32), gym.spaces.Discrete(tmax)))
+        self.observation_space = gym.spaces.Tuple((gym.spaces.Box(low=0, high=1, shape=(1, N + 1), dtype=np.float32), gym.spaces.Discrete(tmax + 1)))
 
     def get_reward(self):
         if self.current_round < tmax:
@@ -37,7 +37,7 @@ class RLWithBushMostellerSLEnv(RLWithBushMostellerEnv):
             return sum(sum(at[:N]) for at in self.all_at)
 
     def get_state(self):
-        return ([self.all_at[self.current_round - 1]], self.current_round - 1)
+        return ([self.all_at[self.current_round - 1]], self.current_round)
 
 if __name__ == '__main__':
     # all_rewards = []
@@ -47,6 +47,8 @@ if __name__ == '__main__':
 
     #     for i in range(tmax):
     #         state, reward, done, info = env.step(100)
+    #         print(state)
+    #         print(reward)
     #         if i == tmax - 1:
     #             all_rewards.append(reward)
 
@@ -63,7 +65,7 @@ if __name__ == '__main__':
     ray.init()
     trainer = DQNTrainer(env=RLWithBushMostellerSLEnv, config=env_config)
 
-    NUM_TRAINING_ITERATIONS = 5000
+    NUM_TRAINING_ITERATIONS = 1
 
     episode_reward_means = open('sl_results/episode_reward_means.txt', 'w+')
     full_results = open('sl_results/full_results.txt', 'w+')
