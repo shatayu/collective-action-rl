@@ -87,19 +87,19 @@ if __name__ == '__main__':
         full_results.write(pretty_print(result))
         full_results.write('\n')
 
-        episode_reward_means.close()
-        full_results.close()
-        checkpoint_paths.close()
+    episode_reward_means.close()
+    full_results.close()
+    checkpoint_paths.close()
 
-        total_reward = 0
-        env = RLWithBushMostellerSLEnv({})
-        state = env.reset()
+    total_reward = 0
+    env = RLWithBushMostellerSLEnv({})
+    state = env.reset()
 
-        done = False
-        while not done:
-            action = trainer.compute_action(state)
-            state, reward, done, info = env.step(action)
-            # print(state)
-            total_reward += reward
+    done = False
+    while not done:
+        action = trainer.compute_action(state)
+        state, reward, done, info = env.step(action)
+        # print(state)
+        total_reward += reward
 
-        print("Total reward = " + str(total_reward))
+    print("Total reward = " + str(total_reward))
