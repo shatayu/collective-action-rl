@@ -3,13 +3,18 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-f = open('current_episode_reward_means.txt', 'r')
-lines = f.readlines()
-means = [float(line) for line in lines]
+folders = ['sl_results', 'pl_results', 'sw_results', 'pw_results']
 
-plt.plot(means)
+for folder in folders:
+    f = open(folder + '/episode_reward_means.txt', 'r')
+    lines = f.readlines()
+    means = [float(line) for line in lines]
 
-plt.xlabel('Iteration')
-plt.ylabel('Reward')
-plt.title('Episode Reward Means for DQN Agent')
-plt.savefig('episode_reward_means_chart.png')
+    plt.plot(means)
+
+    plt.xlabel('Iteration')
+    plt.ylabel('Reward')
+    plt.title('Episode Reward Means for DQN Agent (' + folder + ')')
+    plt.savefig(folder + '/episode_reward_means_chart.png')
+
+    f.close()
