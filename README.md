@@ -16,9 +16,12 @@ In summary:
 These experiments tested two things: varying the objectives of the agents (proportion of contributions over 0.5 and total sum of contributions) and varying the information they had available (last round only and entire game). As a result, a shorthand was developed to identify these experiments.
 
 P = proportion of contributions over 0.5
+
 S = sum of contributions
 
+
 L = last round known to RL agent
+
 W = whole game known to RL agent
 
 The two letters put together tell you what the agent is trying to do and what information it knows.
