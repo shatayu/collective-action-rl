@@ -25,7 +25,7 @@ The two letters put together tell you what the agent is trying to do and what in
 
 ## How to Run the Code
 
-These experiments were ran using Python 3.7.9. Other versions of Python 3 may work, but 3.7.9 definitely works.
+These experiments were ran using Python 3.7.9. Other versions of Python 3 may work, but 3.7.9 definitely works. Run `python --version` to see which version of Python is active on your machine.
 
 The documents below use the PL experiment as an example. For PW, SL, and SW, just replace "PL" with your experiment.
 
