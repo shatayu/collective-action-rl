@@ -6,14 +6,14 @@ Install this repository with `git clone https://github.com/shatayu/collective-ac
 
 In summary:
 
-PL = agent tried to maximize proportion of others' contributions over 0.5 with knowledge of the last round only
-PW = agent tried to maximize proportion of others' contributions over 0.5 with knowledge of the whole game
-SL = agent tried to maximize sum of others' contributions with knowledge of the last round only
-SW = agent tried to maximize sum of others' contribution with knowledge of the whole game
+* PL = agent tried to maximize proportion of others' contributions over 0.5 with knowledge of the last round only
+* PW = agent tried to maximize proportion of others' contributions over 0.5 with knowledge of the whole game
+* SL = agent tried to maximize sum of others' contributions with knowledge of the last round only
+* SW = agent tried to maximize sum of others' contribution with knowledge of the whole game
 
-### Explanation of the code
+### Explanation of the legend
 
-These experiments tested two things: varying the objectives of the agents (proportion of contributions over 0.5 and total sum of contributions) and varying the information they had available (last round only and entire game). As a result, a code was developed to identify these experiments.
+These experiments tested two things: varying the objectives of the agents (proportion of contributions over 0.5 and total sum of contributions) and varying the information they had available (last round only and entire game). As a result, a shorthand was developed to identify these experiments.
 
 P = proportion of contributions over 0.5
 S = sum of contributions
