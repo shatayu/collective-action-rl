@@ -12,31 +12,32 @@ W = whole game visible
 L = last round visible
 """
 
-from RLWithBushMostellerEnv import RLWithBushMostellerEnv
-from BushMostellerConstants import N, tmax
-
 import numpy as np
 
 import ray
 from ray import tune
 from ray.rllib.agents.dqn import DQNTrainer, DEFAULT_CONFIG
 from ray.tune.logger import pretty_print
+import gym
 
-from training_script import train_agent_for_environment
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from RLWithBushMostellerEnv import RLWithBushMostellerEnv
+from BushMostellerConstants import N, tmax
 
 class RLWithBushMostellerMeanSDEnv(RLWithBushMostellerEnv):
+    def __init__(self, *args):
+        super().__init__(*args)
+        self.observation_space = gym.spaces.Box(low=-1, high=tmax + 1, shape=(tmax * 2 + 1, ), dtype=np.float32)
+
     def get_state(self):
         game = np.array(self.all_at)
-
-        # 4 x 25
+        game = np.delete(game, N - 1, axis=1)
 
         means = game.mean(axis=1)
         standard_deviations = game.std(axis=1)
 
-        print(means.shape)
-        print(standard_deviations.shape)
-
         means[:self.num_rounds_hidden] = -1
         standard_deviations[:self.num_rounds_hidden] = -1
 
-        return np.concatenate([means, standard_deviations, np.array([self.current_round])])
+        return np.concatenate([means, standard_deviations, np.array([self.current_round])]).astype(np.float32)

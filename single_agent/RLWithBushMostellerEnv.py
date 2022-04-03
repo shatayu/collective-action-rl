@@ -54,7 +54,6 @@ class RLWithBushMostellerEnv(gym.Env):
         self.all_at = [([0.0] * (N + 1)) for _ in range(tmax)]
 
         self.action_space = gym.spaces.Discrete(101)
-        self.observation_space = gym.spaces.Box(low=0, high=1, shape=(tmax, N + 1), dtype=np.float32)
 
         self.initialize(self.net, self.payoff, self.at, self.pt, self.st, self.At)
 
@@ -87,6 +86,7 @@ class RLWithBushMostellerEnv(gym.Env):
         self.observation_space = gym.spaces.Box(low=0, high=1, shape=(tmax, N), dtype=np.float32)
 
         self.initialize(self.net, self.payoff, self.at, self.pt, self.st, self.At)
+
         return self.get_state()
         
     def completeNet(self):

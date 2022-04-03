@@ -1,59 +1,32 @@
-import numpy as np
-import gym
-from ray.rllib.models import ModelCatalog
-from ray.rllib.models.tf.tf_modelv2 import TFModelV2
-from gym.spaces import Discrete, Box, MultiDiscrete
-
-import ray
 from ray import tune
-from ray.rllib.agents.dqn import DQNTrainer, DEFAULT_CONFIG
-from ray.tune.logger import pretty_print
+from monsterurl import get_monster
 
-import os
+def train_agent_for_environment(EnvClass, env_config, experiment_name):
+    analysis = tune.run(
+        "DQN",
+        stop={'training_iteration': 5},
+        checkpoint_freq=100,
+        keep_checkpoints_num=1,
+        checkpoint_score_attr='episode_reward_mean',
+        checkpoint_at_end=1,
+        config = {
+            "env": EnvClass,
+            "lr": tune.grid_search([1e-2, 1e-4, 1e-6]),
+            "env_config": env_config
+        }
+    )
 
-NUM_TRAINING_ITERATIONS = 5000
+    best_trial = analysis.get_best_trial(metric='episode_reward_mean', mode='max')
+    best_checkpoint = analysis.get_best_checkpoint(
+        metric='episode_reward_mean', trial=best_trial,  mode='max'
+    )
 
-def train_agent_for_environment(train_env, test_env, name, env_config):
-    ray.shutdown()
-    ray.init()
-    trainer = DQNTrainer(env=train_env, config=env_config)
+    file_name = f'results/{experiment_name}_{get_monster()}.txt'
 
-    if not os.path.exists(f'{name}'):
-        os.makedirs(f'{name}')
+    with open(file_name, 'w') as f:
+        print(env_config['reward_function'], file=f)
+        print(experiment_name, file=f)
+        print(best_checkpoint, file=f)
 
-    episode_reward_means = open(f'{name}/episode_reward_means.txt', 'w+')
-    full_results = open(f'{name}/full_results.txt', 'w+')
-    checkpoint_paths = open(f'{name}/checkpoints.txt', 'w+')
+    print(f'Wrote to {file_name}')
 
-    for i in range(NUM_TRAINING_ITERATIONS):
-        if i % 100 == 0:
-            checkpoint = trainer.save()
-            print(checkpoint)
-            checkpoint_paths.write(str(i) + ": ")
-            checkpoint_paths.write(checkpoint)
-            checkpoint_paths.write('\n')
-
-        result = trainer.train()
-        episode_reward_mean = result.get('episode_reward_mean')
-        print(str(episode_reward_mean))
-        episode_reward_means.write(str(episode_reward_mean))
-        episode_reward_means.write('\n')
-        full_results.write(pretty_print(result))
-        full_results.write('\n')
-
-    episode_reward_means.close()
-    full_results.close()
-    checkpoint_paths.close()
-
-    total_reward = 0
-    env = test_env
-    state = env.reset()
-
-    done = False
-    while not done:
-        action = trainer.compute_action(state)
-        state, reward, done, _ = env.step(action)
-        # print(state)
-        total_reward += reward
-
-    print("Total reward = " + str(total_reward))
