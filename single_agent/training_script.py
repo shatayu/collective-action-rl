@@ -4,8 +4,8 @@ from monsterurl import get_monster
 def train_agent_for_environment(EnvClass, env_config, experiment_name):
     analysis = tune.run(
         "DQN",
-        stop={'training_iteration': 5},
-        checkpoint_freq=100,
+        stop={'training_iteration': 100},
+        checkpoint_freq=10,
         keep_checkpoints_num=1,
         checkpoint_score_attr='episode_reward_mean',
         checkpoint_at_end=1,
