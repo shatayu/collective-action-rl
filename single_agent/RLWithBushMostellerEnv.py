@@ -32,12 +32,17 @@ from ray.rllib.utils import try_import_tf
 from ray.tune import grid_search
 import math
 
-from BushMostellerConstants import iteNum, N, tmax, a, std, beta, A, X
+from BushMostellerConstants import iteNum, N, tmax, a, std, beta, A, X, COOPERATIVE_CONSTANT_FOR_REWARD
 
 tf = try_import_tf()
 
 class RLWithBushMostellerEnv(gym.Env):
     def __init__(self, config):
+        self.num_rounds_hidden = config['num_rounds_hidden']
+        self.reward_function = config['reward_function']
+
+        assert self.reward_function in ['sum', 'proportion'], 'Invalid reward function'
+
         self.aveCont = [0.0] * tmax
         self.net = self.completeNet()
         self.pt = [0.0] * N
@@ -142,9 +147,14 @@ class RLWithBushMostellerEnv(gym.Env):
         return self.get_state(), self.get_reward(), self.current_round >= tmax, {}
     
     def get_state(self):
-        # return self.all_at
         pass
 
     def get_reward(self):
-        # return 0.0 if self.current_round < tmax else sum(sum(at) for at in self.all_at)
-        pass
+        if self.current_round < tmax:
+            return 0
+        else:
+            return (
+                sum(sum(at[:N]) for at in self.all_at) # sum reward
+                if self.reward_function == 'sum'
+                else sum([len(list(filter(lambda x: x > 0.5, at[:3]))) for at in self.all_at]) # proportional reward
+            )
